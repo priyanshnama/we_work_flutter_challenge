@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:we_work_flutter_challenge/data/user_address.dart';
-import 'package:we_work_flutter_challenge/ui/we_movies/we_movies.dart';
+import 'package:we_work_flutter_challenge/ui/we_movies.dart';
 
 class HomeScreen extends StatefulWidget {
   final UserAddress userAddress;

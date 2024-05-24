@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_work_flutter_challenge/data/movie.dart';
-import 'package:we_work_flutter_challenge/data/we_movies_repository.dart';
+import 'package:we_work_flutter_challenge/service/we_movies_repository.dart';
 
 abstract class WeMoviesEvent {}
 
@@ -12,7 +12,9 @@ abstract class WeMoviesState {}
 
 class WeMoviesInitial extends WeMoviesState {}
 
-class WeMoviesLoading extends WeMoviesState {}
+class TopRatedMoviesLoading extends WeMoviesState {}
+
+class NowPlayingMoviesLoading extends WeMoviesState {}
 
 class TopRatedMoviesLoaded extends WeMoviesState {
   final List<Movie> topRatedMovies;
@@ -36,7 +38,7 @@ class WeMoviesBloc extends Bloc<WeMoviesEvent, WeMoviesState> {
 
   WeMoviesBloc(this.weMoviesRepository) : super(WeMoviesInitial()) {
     on<FetchTopRatedMoviesEvent>((event, emit) async {
-      emit(WeMoviesLoading());
+      emit(TopRatedMoviesLoading());
       try {
         final topRatedMovies = await weMoviesRepository.getTopRatedMovies();
         emit(TopRatedMoviesLoaded(topRatedMovies));
@@ -46,7 +48,7 @@ class WeMoviesBloc extends Bloc<WeMoviesEvent, WeMoviesState> {
     });
 
     on<FetchNowPlayingMoviesEvent>((event, emit) async {
-      emit(WeMoviesLoading());
+      emit(NowPlayingMoviesLoading());
       try {
         final nowPlayingMovies = await weMoviesRepository.getNowPlayingMovies();
         emit(NowPlayingMoviesLoaded(nowPlayingMovies));

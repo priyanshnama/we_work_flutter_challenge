@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:we_work_flutter_challenge/ui/splash_screen/splash_screen.dart';
+import 'package:we_work_flutter_challenge/ui/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());

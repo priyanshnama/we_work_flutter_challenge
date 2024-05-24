@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_work_flutter_challenge/service/location_service.dart';
-import 'package:we_work_flutter_challenge/ui/home_screen/home_screen.dart';
-import 'package:we_work_flutter_challenge/ui/splash_screen/splash_bloc.dart';
+import 'package:we_work_flutter_challenge/ui/home_screen.dart';
+import 'package:we_work_flutter_challenge/bloc/splash_bloc.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
