@@ -67,16 +67,16 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: customAppBar(),
         body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.lightBlue,
-                  Colors.white,
-                ],
-              ),
+            decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.purple.shade200,
+                Colors.white,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
+          ),
             child: WeMovies()),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
