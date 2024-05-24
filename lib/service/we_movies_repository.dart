@@ -44,9 +44,9 @@ class WeMoviesRepository {
     }
   }
 
-  Future<List<Movie>> getTopRatedMovies() => _fetchMovies('$_baseUrl/top_rated?language=en-US&page=1');
+Future<List<Movie>> getTopRatedMovies({int page = 1}) => _fetchMovies('$_baseUrl/top_rated?language=en-US&page=$page');
 
-  Future<List<Movie>> getNowPlayingMovies() => _fetchMovies('$_baseUrl/now_playing?language=en-US&page=1');
+  Future<List<Movie>> getNowPlayingMovies({int page = 1}) => _fetchMovies('$_baseUrl/now_playing?language=en-US&page=$page');
 
   Future<String> getFullImageUrl(String imagePath, {String size = 'w500'}) async {
     if (_secureBaseUrl == null || _posterSizes == null) {

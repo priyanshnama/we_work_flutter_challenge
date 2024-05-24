@@ -20,12 +20,30 @@ class _WeMoviesState extends State<WeMovies> {
   final _searchController = TextEditingController();
   late final TopRatedMoviesBloc topRatedMoviesBloc;
   late final NowPlayingMoviesBloc nowPlayingMoviesBloc;
+  final ScrollController _horizontalScrollController = ScrollController();
 
   @override
   void initState() {
     topRatedMoviesBloc = TopRatedMoviesBloc(context.read<WeMoviesRepository>());
     nowPlayingMoviesBloc = NowPlayingMoviesBloc(context.read<WeMoviesRepository>());
+
+    _horizontalScrollController.addListener(_onVerticalScroll);
+
     super.initState();
+  }
+
+  void _onVerticalScroll() {
+    if (_horizontalScrollController.position.pixels == _horizontalScrollController.position.maxScrollExtent) {
+      if (topRatedMoviesBloc.state is TopRatedMoviesLoaded) {
+        topRatedMoviesBloc.add(FetchMoreTopRatedMoviesEvent());
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _horizontalScrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -50,6 +68,7 @@ class _WeMoviesState extends State<WeMovies> {
               nowPlayingMoviesBloc.add(FetchNowPlayingMoviesEvent());
             },
             child: SingleChildScrollView(
+              controller: _horizontalScrollController,
               physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
@@ -86,6 +105,11 @@ class _WeMoviesState extends State<WeMovies> {
                       } else if (state is NowPlayingMoviesLoaded) {
                         final nowPlayingMovies = state.nowPlayingMovies;
                         return NowPlayingSection(
+                          onPageChanged: (index, reason) {
+                              if (index == nowPlayingMovies.length - 1) {
+                                nowPlayingMoviesBloc.add(FetchMoreNowPlayingMoviesEvent());
+                              }
+                            },
                             nowPlayingMovies: nowPlayingMovies);
                       } else if (state is NowPlayingMoviesError) {
                         return Center(child: Text(state.message));
