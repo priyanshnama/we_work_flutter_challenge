@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:we_work_flutter_challenge/data/movie.dart';
+import 'package:we_work_flutter_challenge/service/we_movies_repository.dart';
 
 class TopRatedMovieCard extends StatelessWidget {
   final Movie movie;
@@ -24,11 +25,31 @@ class TopRatedMovieCard extends StatelessWidget {
                   topLeft: Radius.circular(15),
                   topRight: Radius.circular(15),
                 ),
-                child: Image.network(
-                  'https://image.tmdb.org/t/p/w500${movie.backdropPath}',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 180,
+                child: FutureBuilder<String>(
+                  future:
+                      WeMoviesRepository().getFullImageUrl(movie.backdropPath),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    } else if (snapshot.hasData) {
+                      return Image.network(
+                        snapshot.requireData,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 180,
+                      );
+                    } else {
+                      return const Center(
+                        child: Text('No image available'),
+                      );
+                    }
+                  },
                 ),
               ),
               Positioned(
@@ -39,10 +60,12 @@ class TopRatedMovieCard extends StatelessWidget {
                     color: Colors.black54,
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Row(
                     children: [
-                      const Icon(Icons.remove_red_eye, color: Colors.white, size: 16),
+                      const Icon(Icons.remove_red_eye,
+                          color: Colors.white, size: 16),
                       const SizedBox(width: 5),
                       Text(
                         '${(movie.popularity / 1000).toStringAsFixed(1)}K',
@@ -61,12 +84,14 @@ class TopRatedMovieCard extends StatelessWidget {
               children: [
                 Text(
                   movie.title,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 5),
                 Row(
                   children: [
-                    const Icon(Icons.calendar_today, color: Colors.grey, size: 16),
+                    const Icon(Icons.calendar_today,
+                        color: Colors.grey, size: 16),
                     const SizedBox(width: 5),
                     Expanded(
                       child: Text(
