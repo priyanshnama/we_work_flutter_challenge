@@ -5,6 +5,7 @@ import 'package:we_work_flutter_challenge/bloc/we_movies/top_rated_movies_bloc.d
 import 'package:we_work_flutter_challenge/bloc/we_movies/we_movies_states.dart';
 import 'package:we_work_flutter_challenge/service/we_movies_repository.dart';
 import 'package:we_work_flutter_challenge/ui/util/gradient_line.dart';
+import 'package:we_work_flutter_challenge/ui/util/now_playing_section.dart';
 import 'package:we_work_flutter_challenge/ui/util/top_rated_movie_card.dart';
 
 import '../bloc/we_movies/we_movies_events.dart';
@@ -56,7 +57,7 @@ class _WeMoviesState extends State<WeMovies> {
                   ),
                 ),
                 const SizedBox(height: 20),
-            
+
                 // Now Playing section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -71,8 +72,7 @@ class _WeMoviesState extends State<WeMovies> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is NowPlayingMoviesLoaded) {
                       final nowPlayingMovies = state.nowPlayingMovies;
-                      return Container(
-                          child: Text(nowPlayingMovies.length.toString()));
+                      return NowPlayingSection(nowPlayingMovies: nowPlayingMovies);
                     } else if (state is NowPlayingMoviesError) {
                       return Center(child: Text(state.message));
                     } else {
@@ -81,7 +81,7 @@ class _WeMoviesState extends State<WeMovies> {
                   },
                 ),
                 const SizedBox(height: 20),
-            
+
                 // Top Rated section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -96,7 +96,11 @@ class _WeMoviesState extends State<WeMovies> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is TopRatedMoviesLoaded) {
                       final topRatedMovies = state.topRatedMovies;
-                      return Column(children: topRatedMovies.map((movie) => TopRatedMovieCard(movie: movie)).toList(),);
+                      return Column(
+                        children: topRatedMovies
+                            .map((movie) => TopRatedMovieCard(movie: movie))
+                            .toList(),
+                      );
                     } else if (state is TopRatedMoviesError) {
                       return Center(child: Text(state.message));
                     } else {
