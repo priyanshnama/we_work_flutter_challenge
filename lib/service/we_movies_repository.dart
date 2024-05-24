@@ -3,6 +3,14 @@ import 'package:http/http.dart' as http;
 import 'package:we_work_flutter_challenge/data/movie.dart';
 
 class WeMoviesRepository {
+  static final WeMoviesRepository _instance = WeMoviesRepository._internal();
+
+  factory WeMoviesRepository() {
+    return _instance;
+  }
+
+  WeMoviesRepository._internal();
+
   static const String _apiKey = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YTg3ZTY4MDMyODIwMTIzZmQ0Yzg0YjQzNDhjYjc3ZCIsInN1YiI6IjY2Mjg5NDExOTFmMGVhMDE0YjAwOWU1ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6zIM73Giwg5M4wP6MX8KDCpee7IMnpnLTZUyMpETb08';
   static const String _baseUrl = 'https://api.themoviedb.org/3/movie';
   static const String _configurationUrl = 'https://api.themoviedb.org/3/configuration';

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:we_work_flutter_challenge/service/we_movies_repository.dart';
 import 'package:we_work_flutter_challenge/ui/splash_screen.dart';
 
 void main() {
@@ -10,13 +12,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        Provider<WeMoviesRepository>(
+          create: (_) => WeMoviesRepository(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const SplashScreen()
       ),
-      home: const SplashScreen()
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_work_flutter_challenge/data/movie.dart';
 import 'package:we_work_flutter_challenge/service/we_movies_repository.dart';
 
@@ -26,8 +27,9 @@ class TopRatedMovieCard extends StatelessWidget {
                   topRight: Radius.circular(15),
                 ),
                 child: FutureBuilder<String>(
-                  future:
-                      WeMoviesRepository().getFullImageUrl(movie.backdropPath),
+                  future: context
+                      .read<WeMoviesRepository>()
+                      .getFullImageUrl(movie.backdropPath),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
