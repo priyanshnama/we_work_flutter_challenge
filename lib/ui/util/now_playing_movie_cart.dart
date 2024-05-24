@@ -12,21 +12,19 @@ class NowPlayingMovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(20),
       ),
       margin: const EdgeInsets.all(10),
       elevation: 5,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
                 FutureBuilder<String>(
-                  future: context
-                      .read<WeMoviesRepository>()
-                      .getFullImageUrl(movie.backdropPath),
+                  future: context.read<WeMoviesRepository>().getFullImageUrl(movie.backdropPath),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -41,7 +39,7 @@ class NowPlayingMovieCard extends StatelessWidget {
                         snapshot.requireData,
                         fit: BoxFit.cover,
                         width: double.infinity,
-                        height: 180,
+                        height: 250,
                       );
                     } else {
                       return const Center(
@@ -52,59 +50,59 @@ class NowPlayingMovieCard extends StatelessWidget {
                 ),
                 Positioned(
                   top: 10,
+                  left: 10,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          movie.voteAverage.toStringAsFixed(2),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const Icon(Icons.star, color: Colors.amber, size: 16),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 10,
                   right: 10,
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.remove_red_eye, color: Colors.white, size: 16),
+                        const SizedBox(width: 5),
+                        Text(
+                          '${movie.popularity.toInt()}',
+                          style: const TextStyle(color: Colors.white),
                         ),
-                        child: Row(
-                          children: [
-                            Text(
-                              movie.voteAverage.toStringAsFixed(2),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                            const Icon(Icons.star, color: Colors.amber, size: 16),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.remove_red_eye, color: Colors.white, size: 16),
-                            const SizedBox(width: 5),
-                            Text(
-                              '${movie.popularity.toInt()}',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
             Container(
               padding: const EdgeInsets.all(10),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.black54, Colors.black87],
+                  colors: [Colors.black.withOpacity(0.6), Colors.black.withOpacity(0.8)],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
+                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,19 +123,11 @@ class NowPlayingMovieCard extends StatelessWidget {
                     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      const Icon(Icons.calendar_today, color: Colors.white, size: 16),
-                      const SizedBox(width: 5),
-                      Expanded(
-                        child: Text(
-                          movie.overview,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    movie.overview,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white),
                   ),
                   const SizedBox(height: 10),
                   Text(

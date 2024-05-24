@@ -15,6 +15,6 @@ class NowPlayingSection extends StatelessWidget {
         itemBuilder: (context, index, realIndex) {
           return NowPlayingMovieCard(movie: nowPlayingMovies[index]);
         },
-        options: CarouselOptions(height: 373));
+        options: CarouselOptions(height: 450));
   }
 }
