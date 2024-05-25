@@ -9,8 +9,11 @@ class NowPlayingSection extends StatefulWidget {
   final List<Movie> nowPlayingMovies;
   final Function(int, CarouselPageChangedReason) onPageChanged;
 
-  const NowPlayingSection(
-      {super.key, required this.nowPlayingMovies, required this.onPageChanged});
+  const NowPlayingSection({
+    Key? key,
+    required this.nowPlayingMovies,
+    required this.onPageChanged,
+  }) : super(key: key);
 
   @override
   State<NowPlayingSection> createState() => _NowPlayingSectionState();
@@ -18,7 +21,6 @@ class NowPlayingSection extends StatefulWidget {
 
 class _NowPlayingSectionState extends State<NowPlayingSection> {
   int _current = 0;
-
   final CarouselController _controller = CarouselController();
 
   @override
@@ -29,9 +31,7 @@ class _NowPlayingSectionState extends State<NowPlayingSection> {
           padding: const EdgeInsets.all(8.0),
           child: WeMoviesHeader(numberOfMovies: widget.nowPlayingMovies.length),
         ),
-        const SizedBox(
-          height: 20,
-        ),
+        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -60,44 +60,52 @@ class _NowPlayingSectionState extends State<NowPlayingSection> {
             viewportFraction: 0.8,
           ),
         ),
-        const SizedBox(
-          height: 20,
-        ),
+        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ...widget.nowPlayingMovies.asMap().entries.map((entry) {
-              return GestureDetector(
-                onTap: () => _controller.animateToPage(entry.key),
-                child: _current == entry.key
-                    ? Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          '${_current + 1}/${widget.nowPlayingMovies.length}',
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      )
-                    : Container(
-                        width: 8.0,
-                        height: 8.0,
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color:
-                              (Theme.of(context).brightness == Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black)
-                                  .withOpacity(0.4),
-                        ),
-                      ),
-              );
-            }),
+            if (_current > 0)
+              GestureDetector(
+                onTap: () => _controller.animateToPage(_current - 1),
+                child: Container(
+                  width: 8.0,
+                  height: 8.0,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black)
+                        .withOpacity(0.4),
+                  ),
+                ),
+              ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                '${_current + 1}/${widget.nowPlayingMovies.length}',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+            if (_current < widget.nowPlayingMovies.length - 1)
+              Container(
+                width: 8.0,
+                height: 8.0,
+                margin: const EdgeInsets.symmetric(
+                    vertical: 8.0, horizontal: 4.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: (Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black)
+                      .withOpacity(0.4),
+                ),
+              ),
           ],
         ),
       ],
