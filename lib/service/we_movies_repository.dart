@@ -9,9 +9,11 @@ class WeMoviesRepository {
 
   WeMoviesRepository._internal();
 
-  static const String _apiKey = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YTg3ZTY4MDMyODIwMTIzZmQ0Yzg0YjQzNDhjYjc3ZCIsInN1YiI6IjY2Mjg5NDExOTFmMGVhMDE0YjAwOWU1ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6zIM73Giwg5M4wP6MX8KDCpee7IMnpnLTZUyMpETb08';
+  static const String _apiKey =
+      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YTg3ZTY4MDMyODIwMTIzZmQ0Yzg0YjQzNDhjYjc3ZCIsInN1YiI6IjY2Mjg5NDExOTFmMGVhMDE0YjAwOWU1ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6zIM73Giwg5M4wP6MX8KDCpee7IMnpnLTZUyMpETb08';
   static const String _baseUrl = 'https://api.themoviedb.org/3/movie';
-  static const String _configurationUrl = 'https://api.themoviedb.org/3/configuration';
+  static const String _configurationUrl =
+      'https://api.themoviedb.org/3/configuration';
   static const Map<String, String> _headers = {
     'Authorization': 'Bearer $_apiKey',
     'accept': 'application/json',
@@ -21,7 +23,8 @@ class WeMoviesRepository {
   List<String>? _posterSizes;
 
   Future<void> _fetchConfiguration() async {
-    final response = await http.get(Uri.parse(_configurationUrl), headers: _headers);
+    final response =
+        await http.get(Uri.parse(_configurationUrl), headers: _headers);
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -44,11 +47,14 @@ class WeMoviesRepository {
     }
   }
 
-Future<List<Movie>> getTopRatedMovies({int page = 1}) => _fetchMovies('$_baseUrl/top_rated?language=en-US&page=$page');
+  Future<List<Movie>> getTopRatedMovies({int page = 1}) =>
+      _fetchMovies('$_baseUrl/top_rated?language=en-US&page=$page');
 
-  Future<List<Movie>> getNowPlayingMovies({int page = 1}) => _fetchMovies('$_baseUrl/now_playing?language=en-US&page=$page');
+  Future<List<Movie>> getNowPlayingMovies({int page = 1}) =>
+      _fetchMovies('$_baseUrl/now_playing?language=en-US&page=$page');
 
-  Future<String> getFullImageUrl(String imagePath, {String size = 'w500'}) async {
+  Future<String> getFullImageUrl(String imagePath,
+      {String size = 'w500'}) async {
     if (_secureBaseUrl == null || _posterSizes == null) {
       await _fetchConfiguration();
     }
