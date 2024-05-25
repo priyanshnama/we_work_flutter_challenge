@@ -25,7 +25,8 @@ class _WeMoviesState extends State<WeMovies> {
   @override
   void initState() {
     topRatedMoviesBloc = TopRatedMoviesBloc(context.read<WeMoviesRepository>());
-    nowPlayingMoviesBloc = NowPlayingMoviesBloc(context.read<WeMoviesRepository>());
+    nowPlayingMoviesBloc =
+        NowPlayingMoviesBloc(context.read<WeMoviesRepository>());
 
     _horizontalScrollController.addListener(_onVerticalScroll);
 
@@ -33,7 +34,8 @@ class _WeMoviesState extends State<WeMovies> {
   }
 
   void _onVerticalScroll() {
-    if (_horizontalScrollController.position.pixels == _horizontalScrollController.position.maxScrollExtent) {
+    if (_horizontalScrollController.position.pixels ==
+        _horizontalScrollController.position.maxScrollExtent) {
       if (topRatedMoviesBloc.state is TopRatedMoviesLoaded) {
         topRatedMoviesBloc.add(FetchMoreTopRatedMoviesEvent());
       }
@@ -91,13 +93,6 @@ class _WeMoviesState extends State<WeMovies> {
                   const SizedBox(height: 20),
 
                   // Now Playing section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const Text("NOW PLAYING"),
-                      GradientLine(Colors.black),
-                    ],
-                  ),
                   BlocBuilder<NowPlayingMoviesBloc, NowPlayingMoviesState>(
                     builder: (context, state) {
                       if (state is NowPlayingMoviesLoading) {
@@ -105,9 +100,10 @@ class _WeMoviesState extends State<WeMovies> {
                       } else if (state is NowPlayingMoviesLoaded) {
                         final nowPlayingMovies = state.nowPlayingMovies;
                         return NowPlayingSection(
-                          onPageChanged: (index, reason) {
+                            onPageChanged: (index, reason) {
                               if (index == nowPlayingMovies.length - 1) {
-                                nowPlayingMoviesBloc.add(FetchMoreNowPlayingMoviesEvent());
+                                nowPlayingMoviesBloc
+                                    .add(FetchMoreNowPlayingMoviesEvent());
                               }
                             },
                             nowPlayingMovies: nowPlayingMovies);

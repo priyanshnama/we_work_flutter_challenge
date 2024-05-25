@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:we_work_flutter_challenge/data/movie.dart';
+import 'package:we_work_flutter_challenge/ui/util/gradient_line.dart';
 import 'package:we_work_flutter_challenge/ui/util/now_playing_movie_cart.dart';
+import 'package:we_work_flutter_challenge/ui/util/we_movies_header.dart';
 
 class NowPlayingSection extends StatelessWidget {
   final List<Movie> nowPlayingMovies;
@@ -12,16 +14,31 @@ class NowPlayingSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider.builder(
-      itemCount: nowPlayingMovies.length,
-      itemBuilder: (context, index, realIndex) {
-        return NowPlayingMovieCard(movie: nowPlayingMovies[index]);
-      },
-      options: CarouselOptions(
-        onPageChanged: onPageChanged,
-        height: 450,
-        enableInfiniteScroll: false,
-      ),
+    return Column(
+      children: [
+        WeMoviesHeader(numberOfMovies : nowPlayingMovies.length),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Text("NOW PLAYING"),
+            GradientLine(Colors.black),
+          ],
+        ),
+        CarouselSlider.builder(
+          itemCount: nowPlayingMovies.length,
+          itemBuilder: (context, index, realIndex) {
+            return NowPlayingMovieCard(movie: nowPlayingMovies[index]);
+          },
+          options: CarouselOptions(
+            onPageChanged: onPageChanged,
+            height: 450,
+            enableInfiniteScroll: false,
+          ),
+        ),
+      ],
     );
   }
 }

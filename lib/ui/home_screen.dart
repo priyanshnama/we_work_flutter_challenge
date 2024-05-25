@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  AppBar customAppBar() {
+  AppBar customAppBar(TextTheme textTheme) {
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.transparent,
@@ -35,11 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    const Icon(Icons.location_on),
+                    const Icon(Icons.location_on_outlined),
                     const SizedBox(width: 8),
                     Text(
                       widget.userAddress.mainAddress,
-                      style: const TextStyle(fontSize: 18),
+                      style: textTheme.bodyLarge
+                          ?.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -49,10 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            const Icon(
-              Icons.home,
-              size: 40,
-            )
+            ClipOval(
+                child: Image.asset(
+              'assets/icons/we_work_logo.png',
+              height: 40,
+              width: 40,
+            ))
           ],
         ),
       ),
@@ -61,23 +64,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
       home: Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: customAppBar(),
+        appBar: customAppBar(textTheme),
         body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.purple.shade200,
-                Colors.white,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+              gradient: LinearGradient(
+                colors: [
+                  Colors.purple.shade200,
+                  Colors.white,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
             ),
-          ),
-            child: WeMovies()),
+            child: const WeMovies()),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
