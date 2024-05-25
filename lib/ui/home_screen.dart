@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.purple.shade200,
+                  Colors.purple.shade100,
                   Colors.white,
                 ],
                 begin: Alignment.topCenter,

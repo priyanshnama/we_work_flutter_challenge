@@ -16,7 +16,8 @@ class NowPlayingMovieCard extends StatelessWidget {
     return Stack(
       children: [
         ClipPath(
-          clipper: CustomShapeClipper(topHeight: 40, bottomHeight: 60),
+          clipper: CustomShapeClipper(
+              topHeight: 40, bottomHeight: 60, topBarOffset: -20),
           child: FutureBuilder<String>(
             future: context
                 .read<WeMoviesRepository>()
@@ -50,48 +51,63 @@ class NowPlayingMovieCard extends StatelessWidget {
         ),
         Column(
           children: [
-            Row(
-              children: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Row(
-                    children: [
-                      Text(
-                        movie.voteAverage.toStringAsFixed(2),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              child: Row(
+                children: [
+                  const Spacer(),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Row(
+                      children: [
+                        Text(
+                          movie.voteAverage.toStringAsFixed(2),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      const Icon(Icons.star, color: Colors.amber, size: 16),
-                    ],
+                        const Icon(Icons.star, color: Colors.amber, size: 16),
+                      ],
+                    ),
                   ),
-                ),
-                const Spacer(),
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    borderRadius: BorderRadius.circular(20),
+                  const Spacer(),
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.remove_red_eye_outlined,
+                            color: Colors.white, size: 16),
+                        const SizedBox(width: 5),
+                        Text(
+                          '${movie.popularity.toInt()}',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.remove_red_eye,
-                          color: Colors.white, size: 16),
-                      const SizedBox(width: 5),
-                      Text(
-                        '${movie.popularity.toInt()}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ],
+                  const SizedBox(width: 5),
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Icon(Icons.favorite_border_outlined,
+                        color: Colors.white, size: 16),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const Spacer(),
             ClipPath(
-                clipper: CustomShapeClipper(topHeight: 40, bottomHeight: 60),
+                clipper: CustomShapeClipper(
+                    topHeight: 40, bottomHeight: 60, topBarOffset: 20),
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -106,42 +122,65 @@ class NowPlayingMovieCard extends StatelessWidget {
                     borderRadius: const BorderRadius.vertical(
                         bottom: Radius.circular(20)),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.language,
-                              color: Colors.white, size: 16),
-                          const SizedBox(width: 5),
-                          Text(
-                            movie.originalLanguage.toUpperCase(),
-                            style: textTheme.bodySmall
-                                ?.copyWith(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        movie.title,
-                        style: textTheme.headlineMedium
-                            ?.copyWith(color: Colors.white),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        movie.overview,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            textTheme.bodyMedium?.copyWith(color: Colors.white),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        '${movie.voteCount} Votes',
-                        style:
-                            textTheme.bodyLarge?.copyWith(color: Colors.white),
-                      ),
-                    ],
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              width: 90,
+                            ),
+                            const Icon(Icons.language,
+                                color: Colors.white, size: 16),
+                            const SizedBox(width: 5),
+                            Text(
+                              movie.originalLanguage.toUpperCase(),
+                              style: textTheme.bodySmall
+                                  ?.copyWith(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          movie.title,
+                          maxLines: 1,
+                          style: textTheme.bodyLarge?.copyWith(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.calendar_month,
+                              size: 16,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 2 - 35,
+                              child: Text(
+                                movie.overview,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: textTheme.bodySmall
+                                    ?.copyWith(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          '${movie.voteCount} Votes',
+                          style: textTheme.bodyMedium?.copyWith(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
                 ))
           ],

@@ -40,7 +40,7 @@ class NowPlayingSection extends StatelessWidget {
           },
           options: CarouselOptions(
             onPageChanged: onPageChanged,
-            height: 450,
+            height: 350,
             enableInfiniteScroll: false,
             viewportFraction: 0.8
           ),
