@@ -2,8 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:we_work_flutter_challenge/data/movie.dart';
 import 'package:we_work_flutter_challenge/ui/util/carousel_custom_indicator.dart';
-import 'package:we_work_flutter_challenge/ui/util/gradient_line.dart';
 import 'package:we_work_flutter_challenge/ui/util/now_playing_movie_card.dart';
+import 'package:we_work_flutter_challenge/ui/util/section_header.dart';
 import 'package:we_work_flutter_challenge/ui/util/we_movies_header.dart';
 
 class NowPlayingSection extends StatefulWidget {
@@ -32,13 +32,11 @@ class _NowPlayingSectionState extends State<NowPlayingSection> {
           child: WeMoviesHeader(numberOfMovies: widget.nowPlayingMovies.length),
         ),
         const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Text("NOW PLAYING"),
-            GradientLine(Colors.black),
-          ],
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: SectionHeader(title: 'NOW PLAYING'),
         ),
+        const SizedBox(height: 20),
         CarouselSlider.builder(
           itemCount: widget.nowPlayingMovies.length,
           itemBuilder: (context, index, realIndex) {

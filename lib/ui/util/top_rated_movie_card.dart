@@ -72,7 +72,9 @@ class TopRatedMovieCard extends StatelessWidget {
                 children: [
                   Text(
                     movie.title,
-                    style: textTheme.headlineMedium,
+                    maxLines: 1,
+                    style: textTheme.bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   const SizedBox(height: 5),
                   Row(
