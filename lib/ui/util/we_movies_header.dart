@@ -7,6 +7,7 @@ class WeMoviesHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Stack(
       children: [
         ClipPath(
@@ -22,32 +23,19 @@ class WeMoviesHeader extends StatelessWidget {
                 const SizedBox(
                   height: 40,
                 ),
-                const Text(
-                  'We Movies',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Text('We Movies',
+                    style: textTheme.headlineMedium
+                        ?.copyWith(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 5),
-                Text(
-                  '$numberOfMovies Movies are loaded in now playing',
-                  style: const TextStyle(
-                    color: Colors.black54,
-                    fontSize: 16,
-                  ),
-                ),
+                Text('$numberOfMovies Movies are loaded in now playing',
+                    style: textTheme.bodySmall),
               ],
             ),
           ),
         ),
-        const Text(
-          '24TH APR 2024',
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 14,
-          ),
+        Container(
+          padding: const EdgeInsets.only(left: 20, top: 10),
+          child: Text('24TH APR 2024', style: textTheme.bodyMedium),
         ),
       ],
     );
