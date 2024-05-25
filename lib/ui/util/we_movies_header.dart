@@ -15,7 +15,15 @@ class WeMoviesHeader extends StatelessWidget {
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.all(20),
-            color: const Color.fromARGB(195, 198, 155, 211),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                  Colors.black.withOpacity(0.1),
+                  Colors.black.withOpacity(0.2),
+                  Colors.black.withOpacity(0.3)
+                ])),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
