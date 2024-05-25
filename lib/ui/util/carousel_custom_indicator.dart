@@ -19,9 +19,7 @@ class CarouselCustomIndicator extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: (Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black)
+              color: Colors.black
                   .withOpacity(0.4),
             ),
           ),
@@ -46,9 +44,7 @@ class CarouselCustomIndicator extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: (Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black)
+                  color: Colors.black
                       .withOpacity(0.4),
                 ),
               ),

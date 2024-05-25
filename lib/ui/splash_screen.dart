@@ -34,7 +34,31 @@ class SplashScreen extends StatelessWidget {
             );
           }
         },
-        child: const Center(child: CircularProgressIndicator()),
+        child: Container(
+          height: double.infinity,
+          width: double.infinity,
+          color: Colors.white,
+          child: Stack(
+            children: [
+              Center(
+                child: Image.asset(
+                  'assets/icons/we_work_logo_large.png',
+                  height: 200,
+                  width: 200,
+                ),
+              ),
+              const Center(
+                child: SizedBox(
+                  width: 190,
+                  height: 190,
+                  child: CircularProgressIndicator(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     ));
   }
