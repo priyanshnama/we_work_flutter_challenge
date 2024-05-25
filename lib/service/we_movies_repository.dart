@@ -13,29 +13,22 @@ class WeMoviesRepository {
   static const String _apiKey =
       'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YTg3ZTY4MDMyODIwMTIzZmQ0Yzg0YjQzNDhjYjc3ZCIsInN1YiI6IjY2Mjg5NDExOTFmMGVhMDE0YjAwOWU1ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6zIM73Giwg5M4wP6MX8KDCpee7IMnpnLTZUyMpETb08';
   static const String _baseUrl = 'https://api.themoviedb.org/3/movie';
-  static const String _configurationUrl =
-      'https://api.themoviedb.org/3/configuration';
   static const Map<String, String> _headers = {
     'Authorization': 'Bearer $_apiKey',
     'accept': 'application/json',
   };
 
-  String? _secureBaseUrl;
-  List<String>? _posterSizes;
+  final String _secureBaseUrl = 'https://image.tmdb.org/t/p/';
+  final List<String> _posterSizes = [
+    "w92",
+    "w154",
+    "w185",
+    "w342",
+    "w500",
+    "w780",
+    "original"
+  ];
   final Box _cacheBox = Hive.box('moviesCache');
-
-  Future<void> _fetchConfiguration() async {
-    final response =
-        await http.get(Uri.parse(_configurationUrl), headers: _headers);
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      _secureBaseUrl = data['images']['secure_base_url'];
-      _posterSizes = List<String>.from(data['images']['poster_sizes']);
-    } else {
-      throw Exception('Failed to load configuration');
-    }
-  }
 
   Future<List<Movie>> _fetchMovies(String endpoint) async {
     final response = await http.get(Uri.parse(endpoint), headers: _headers);
@@ -77,15 +70,11 @@ class WeMoviesRepository {
     return movies;
   }
 
-  Future<String> getFullImageUrl(String imagePath,
-      {String size = 'w500'}) async {
+  String getFullImageUrl(String imagePath, {String size = 'w500'}) {
     if (imagePath == '') throw "no image path";
-    if (_secureBaseUrl == null || _posterSizes == null) {
-      await _fetchConfiguration();
-    }
 
-    if (!_posterSizes!.contains(size)) {
-      throw Exception('Invalid image size: $size');
+    if (!_posterSizes.contains(size)) {
+      throw 'Invalid Image Size - $size';
     }
 
     return '$_secureBaseUrl$size$imagePath';

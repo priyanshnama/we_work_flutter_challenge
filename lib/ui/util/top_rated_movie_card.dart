@@ -26,43 +26,20 @@ class TopRatedMovieCard extends StatelessWidget {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
-                    bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15),
-                  ),
-                  child: FutureBuilder<String>(
-                    future: context
-                        .read<WeMoviesRepository>()
-                        .getFullImageUrl(movie.backdropPath),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: SizedBox(
-                              height: 250,
-                              width: 250,
-                              child: Text('Error: ${snapshot.error}')),
-                        );
-                      } else if (snapshot.hasData) {
-                        return Image.network(
-                          snapshot.requireData,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: 180,
-                        );
-                      } else {
-                        return const Center(
-                          child: Text('No image available'),
-                        );
-                      }
-                    },
-                  ),
-                ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                    ),
+                    child: Image.network(
+                      context
+                          .read<WeMoviesRepository>()
+                          .getFullImageUrl(movie.backdropPath),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 180,
+                    )),
                 Positioned(
                   left: 10,
                   bottom: 30,

@@ -16,39 +16,16 @@ class NowPlayingMovieCard extends StatelessWidget {
     return Stack(
       children: [
         ClipPath(
-          clipper: CustomShapeClipper(
-              topHeight: 40, bottomHeight: 60, topBarOffset: -20),
-          child: FutureBuilder<String>(
-            future: context
-                .read<WeMoviesRepository>()
-                .getFullImageUrl(movie.backdropPath, size: 'w780'),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: SizedBox(
-                      height: 250,
-                      width: 250,
-                      child: Text('Error: ${snapshot.error}')),
-                );
-              } else if (snapshot.hasData) {
-                return Image.network(
-                  snapshot.requireData,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                );
-              } else {
-                return const Center(
-                  child: Text('No image available'),
-                );
-              }
-            },
-          ),
-        ),
+            clipper: CustomShapeClipper(
+                topHeight: 40, bottomHeight: 60, topBarOffset: -20),
+            child: Image.network(
+              context
+                  .read<WeMoviesRepository>()
+                  .getFullImageUrl(movie.backdropPath, size: 'w780'),
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            )),
         Column(
           children: [
             Container(
