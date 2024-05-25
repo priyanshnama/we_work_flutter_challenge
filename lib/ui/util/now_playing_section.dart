@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:we_work_flutter_challenge/data/movie.dart';
 import 'package:we_work_flutter_challenge/ui/util/gradient_line.dart';
-import 'package:we_work_flutter_challenge/ui/util/now_playing_movie_cart.dart';
+import 'package:we_work_flutter_challenge/ui/util/now_playing_movie_card.dart';
 import 'package:we_work_flutter_challenge/ui/util/we_movies_header.dart';
 
 class NowPlayingSection extends StatelessWidget {
