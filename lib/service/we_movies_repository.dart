@@ -57,7 +57,8 @@ class WeMoviesRepository {
       return moviesJson.map((json) => Movie.fromJson(json)).toList();
     }
 
-    final movies = await _fetchMovies('$_baseUrl/top_rated?language=en-US&page=$page');
+    final movies =
+        await _fetchMovies('$_baseUrl/top_rated?language=en-US&page=$page');
     _cacheBox.put(cacheKey, jsonEncode(movies));
     return movies;
   }
@@ -70,13 +71,15 @@ class WeMoviesRepository {
       return moviesJson.map((json) => Movie.fromJson(json)).toList();
     }
 
-    final movies = await _fetchMovies('$_baseUrl/now_playing?language=en-US&page=$page');
+    final movies =
+        await _fetchMovies('$_baseUrl/now_playing?language=en-US&page=$page');
     _cacheBox.put(cacheKey, jsonEncode(movies));
     return movies;
   }
 
   Future<String> getFullImageUrl(String imagePath,
       {String size = 'w500'}) async {
+    if (imagePath == '') throw "no image path";
     if (_secureBaseUrl == null || _posterSizes == null) {
       await _fetchConfiguration();
     }

@@ -24,7 +24,9 @@ class NowPlayingMovieCard extends StatelessWidget {
             Stack(
               children: [
                 FutureBuilder<String>(
-                  future: context.read<WeMoviesRepository>().getFullImageUrl(movie.backdropPath),
+                  future: context
+                      .read<WeMoviesRepository>()
+                      .getFullImageUrl(movie.backdropPath),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -32,7 +34,10 @@ class NowPlayingMovieCard extends StatelessWidget {
                       );
                     } else if (snapshot.hasError) {
                       return Center(
-                        child: Text('Error: ${snapshot.error}'),
+                        child: SizedBox(
+                            height: 250,
+                            width: 250,
+                            child: Text('Error: ${snapshot.error}')),
                       );
                     } else if (snapshot.hasData) {
                       return Image.network(
@@ -52,7 +57,8 @@ class NowPlayingMovieCard extends StatelessWidget {
                   top: 10,
                   left: 10,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(20),
@@ -82,7 +88,8 @@ class NowPlayingMovieCard extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.remove_red_eye, color: Colors.white, size: 16),
+                        const Icon(Icons.remove_red_eye,
+                            color: Colors.white, size: 16),
                         const SizedBox(width: 5),
                         Text(
                           '${movie.popularity.toInt()}',
@@ -98,11 +105,15 @@ class NowPlayingMovieCard extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.black.withOpacity(0.6), Colors.black.withOpacity(0.8)],
+                  colors: [
+                    Colors.black.withOpacity(0.6),
+                    Colors.black.withOpacity(0.8)
+                  ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
-                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(20)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +131,10 @@ class NowPlayingMovieCard extends StatelessWidget {
                   const SizedBox(height: 5),
                   Text(
                     movie.title,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   const SizedBox(height: 5),
                   Text(
@@ -132,7 +146,8 @@ class NowPlayingMovieCard extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     '${movie.voteCount} Votes',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ],
               ),

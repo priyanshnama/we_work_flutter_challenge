@@ -42,8 +42,11 @@ class TopRatedMovieCard extends StatelessWidget {
                         );
                       } else if (snapshot.hasError) {
                         return Center(
-                          child: Text('Error: ${snapshot.error}'),
-                        );
+                        child: SizedBox(
+                            height: 250,
+                            width: 250,
+                            child: Text('Error: ${snapshot.error}')),
+                      );
                       } else if (snapshot.hasData) {
                         return Image.network(
                           snapshot.requireData,

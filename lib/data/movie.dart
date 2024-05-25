@@ -34,7 +34,7 @@ class Movie {
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
       adult: json['adult'],
-      backdropPath: json['backdrop_path'],
+      backdropPath: json['backdrop_path'] ?? '',
       genreIds:
           json['genre_ids'] != null ? List<int>.from(json['genre_ids']) : [],
       id: json['id'],
@@ -43,7 +43,7 @@ class Movie {
       overview: json['overview'],
       popularity:
           json['popularity'] != null ? json['popularity'].toDouble() : 0.0,
-      posterPath: json['poster_path'],
+      posterPath: json['poster_path'] ?? '',
       releaseDate: json['release_date'] ?? '',
       title: json['title'],
       video: json['video'] ?? false,
