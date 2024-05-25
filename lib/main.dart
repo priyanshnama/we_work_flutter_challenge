@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:we_work_flutter_challenge/service/we_movies_repository.dart';
+import 'package:we_work_flutter_challenge/theme/theme.dart';
 import 'package:we_work_flutter_challenge/ui/splash_screen.dart';
 
 void main() async {
@@ -23,11 +24,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: const SplashScreen()
+        theme: AppTheme.lightTheme,
+        home: const SplashScreen(),
       ),
     );
   }

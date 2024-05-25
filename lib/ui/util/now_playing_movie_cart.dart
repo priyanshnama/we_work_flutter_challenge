@@ -10,6 +10,7 @@ class NowPlayingMovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -124,30 +125,26 @@ class NowPlayingMovieCard extends StatelessWidget {
                       const SizedBox(width: 5),
                       Text(
                         movie.originalLanguage.toUpperCase(),
-                        style: const TextStyle(color: Colors.white),
+                        style: textTheme.bodySmall,
                       ),
                     ],
                   ),
                   const SizedBox(height: 5),
                   Text(
                     movie.title,
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                    style: textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 5),
                   Text(
                     movie.overview,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white),
+                    style: textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 10),
                   Text(
                     '${movie.voteCount} Votes',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
+                    style: textTheme.bodyLarge,
                   ),
                 ],
               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_work_flutter_challenge/data/movie.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_work_flutter_challenge/service/we_movies_repository.dart';
 
 class TopRatedMovieCard extends StatelessWidget {
@@ -10,6 +10,7 @@ class TopRatedMovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(
@@ -29,7 +30,7 @@ class TopRatedMovieCard extends StatelessWidget {
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15),
                     bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15)
+                    bottomRight: Radius.circular(15),
                   ),
                   child: FutureBuilder<String>(
                     future: context
@@ -42,11 +43,11 @@ class TopRatedMovieCard extends StatelessWidget {
                         );
                       } else if (snapshot.hasError) {
                         return Center(
-                        child: SizedBox(
-                            height: 250,
-                            width: 250,
-                            child: Text('Error: ${snapshot.error}')),
-                      );
+                          child: SizedBox(
+                              height: 250,
+                              width: 250,
+                              child: Text('Error: ${snapshot.error}')),
+                        );
                       } else if (snapshot.hasData) {
                         return Image.network(
                           snapshot.requireData,
@@ -94,8 +95,7 @@ class TopRatedMovieCard extends StatelessWidget {
                 children: [
                   Text(
                     movie.title,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    style: textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 5),
                   Row(
@@ -108,7 +108,7 @@ class TopRatedMovieCard extends StatelessWidget {
                           movie.overview,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(color: Colors.grey),
+                          style: textTheme.bodyMedium,
                         ),
                       ),
                     ],
@@ -118,14 +118,18 @@ class TopRatedMovieCard extends StatelessWidget {
                     children: [
                       Text(
                         '${(movie.voteCount / 1000).toStringAsFixed(1)} K Votes',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: textTheme.bodyLarge,
                       ),
                       const SizedBox(width: 10),
-                      Container(width: 1, height: 15, color: Colors.grey,),
+                      Container(
+                        width: 1,
+                        height: 15,
+                        color: Colors.grey,
+                      ),
                       const SizedBox(width: 10),
                       Text(
                         movie.voteAverage.toStringAsFixed(2),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: textTheme.bodyLarge,
                       ),
                       const Icon(Icons.star, color: Colors.amber, size: 16),
                     ],
