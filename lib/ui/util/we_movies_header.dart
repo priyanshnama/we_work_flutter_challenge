@@ -5,8 +5,6 @@ class WeMoviesHeader extends StatelessWidget {
   final int numberOfMovies;
   const WeMoviesHeader({super.key, required this.numberOfMovies});
 
-
-  
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -14,22 +12,16 @@ class WeMoviesHeader extends StatelessWidget {
         ClipPath(
           clipper: CustomShapeClipper(topHeight: 40, bottomHeight: 60),
           child: Container(
-            width: 300,
+            width: double.infinity,
             padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: Color(0xFFd0c0d5),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(50),
-                topRight: Radius.circular(20),
-                bottomLeft: Radius.circular(50),
-                bottomRight: Radius.circular(50),
-              ),
-            ),
+            color: const Color.fromARGB(195, 198, 155, 211),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 40,),
+                const SizedBox(
+                  height: 40,
+                ),
                 const Text(
                   'We Movies',
                   style: TextStyle(
@@ -60,7 +52,4 @@ class WeMoviesHeader extends StatelessWidget {
       ],
     );
   }
-
-
-  
 }

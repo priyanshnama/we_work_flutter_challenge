@@ -75,19 +75,22 @@ class _WeMoviesState extends State<WeMovies> {
               child: Column(
                 children: [
                   // Search bar
-                  TextField(
-                    controller: _searchController,
-                    decoration: const InputDecoration(
-                      hintText: 'Search Movies by name ...',
-                      prefixIcon: Icon(Icons.search),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                        borderSide: BorderSide.none,
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: const InputDecoration(
+                        hintText: 'Search Movies by name ...',
+                        prefixIcon: Icon(Icons.search),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                       ),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                     ),
                   ),
                   const SizedBox(height: 20),

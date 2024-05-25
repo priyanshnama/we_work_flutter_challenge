@@ -16,7 +16,10 @@ class NowPlayingSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        WeMoviesHeader(numberOfMovies : nowPlayingMovies.length),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: WeMoviesHeader(numberOfMovies : nowPlayingMovies.length),
+        ),
         const SizedBox(
           height: 20,
         ),

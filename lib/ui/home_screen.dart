@@ -70,7 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
         extendBodyBehindAppBar: true,
         appBar: customAppBar(textTheme),
         body: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
