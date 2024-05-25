@@ -33,12 +33,16 @@ class NowPlayingSection extends StatelessWidget {
         CarouselSlider.builder(
           itemCount: nowPlayingMovies.length,
           itemBuilder: (context, index, realIndex) {
-            return NowPlayingMovieCard(movie: nowPlayingMovies[index]);
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: NowPlayingMovieCard(movie: nowPlayingMovies[index]),
+            );
           },
           options: CarouselOptions(
             onPageChanged: onPageChanged,
             height: 450,
             enableInfiniteScroll: false,
+            viewportFraction: 0.8
           ),
         ),
       ],
