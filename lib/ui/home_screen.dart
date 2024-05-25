@@ -12,13 +12,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   AppBar customAppBar(TextTheme textTheme) {
     return AppBar(
@@ -96,9 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Upcoming',
             ),
           ],
-          currentIndex: _selectedIndex,
           selectedItemColor: Colors.black,
-          onTap: _onItemTapped,
         ),
       ),
     );
