@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:we_work_flutter_challenge/data/movie.dart';
 
@@ -21,6 +22,7 @@ class WeMoviesRepository {
 
   String? _secureBaseUrl;
   List<String>? _posterSizes;
+  final Box _cacheBox = Hive.box('moviesCache');
 
   Future<void> _fetchConfiguration() async {
     final response =
@@ -47,11 +49,31 @@ class WeMoviesRepository {
     }
   }
 
-  Future<List<Movie>> getTopRatedMovies({int page = 1}) =>
-      _fetchMovies('$_baseUrl/top_rated?language=en-US&page=$page');
+  Future<List<Movie>> getTopRatedMovies({int page = 1}) async {
+    final cacheKey = 'topRatedMovies_page_$page';
+    final cachedData = _cacheBox.get(cacheKey);
+    if (cachedData != null) {
+      final List<dynamic> moviesJson = jsonDecode(cachedData);
+      return moviesJson.map((json) => Movie.fromJson(json)).toList();
+    }
 
-  Future<List<Movie>> getNowPlayingMovies({int page = 1}) =>
-      _fetchMovies('$_baseUrl/now_playing?language=en-US&page=$page');
+    final movies = await _fetchMovies('$_baseUrl/top_rated?language=en-US&page=$page');
+    _cacheBox.put(cacheKey, jsonEncode(movies));
+    return movies;
+  }
+
+  Future<List<Movie>> getNowPlayingMovies({int page = 1}) async {
+    final cacheKey = 'nowPlayingMovies_page_$page';
+    final cachedData = _cacheBox.get(cacheKey);
+    if (cachedData != null) {
+      final List<dynamic> moviesJson = jsonDecode(cachedData);
+      return moviesJson.map((json) => Movie.fromJson(json)).toList();
+    }
+
+    final movies = await _fetchMovies('$_baseUrl/now_playing?language=en-US&page=$page');
+    _cacheBox.put(cacheKey, jsonEncode(movies));
+    return movies;
+  }
 
   Future<String> getFullImageUrl(String imagePath,
       {String size = 'w500'}) async {
