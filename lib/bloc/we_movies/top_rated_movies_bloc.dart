@@ -18,7 +18,14 @@ class TopRatedMoviesBloc
         currentPage = 1;
         topRatedMovies =
             await weMoviesRepository.getTopRatedMovies(page: currentPage);
-        emit(TopRatedMoviesLoaded(topRatedMovies));
+        if (event.query.isEmpty) {
+          emit(TopRatedMoviesLoaded(topRatedMovies));
+        }
+        final filteredMovies = topRatedMovies
+            .where((movie) =>
+                movie.title.toLowerCase().contains(event.query.toLowerCase()))
+            .toList();
+        emit(TopRatedMoviesLoaded(filteredMovies));
       } catch (e) {
         emit(TopRatedMoviesError(e.toString()));
       }
@@ -32,7 +39,14 @@ class TopRatedMoviesBloc
         final moreMovies =
             await weMoviesRepository.getTopRatedMovies(page: currentPage);
         topRatedMovies.addAll(moreMovies);
-        emit(TopRatedMoviesLoaded(topRatedMovies));
+        if (event.query.isEmpty) {
+          emit(TopRatedMoviesLoaded(topRatedMovies));
+        }
+        final filteredMovies = topRatedMovies
+            .where((movie) =>
+                movie.title.toLowerCase().contains(event.query.toLowerCase()))
+            .toList();
+        emit(TopRatedMoviesLoaded(filteredMovies));
       } catch (e) {
         emit(TopRatedMoviesError(e.toString()));
       } finally {

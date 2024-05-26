@@ -2,9 +2,17 @@
 
 abstract class TopRatedMoviesEvent {}
 
-class FetchTopRatedMoviesEvent extends TopRatedMoviesEvent {}
+class FetchTopRatedMoviesEvent extends TopRatedMoviesEvent {
+  final String query;
 
-class FetchMoreTopRatedMoviesEvent extends TopRatedMoviesEvent {}
+  FetchTopRatedMoviesEvent(this.query);
+}
+
+class FetchMoreTopRatedMoviesEvent extends TopRatedMoviesEvent {
+  final String query;
+
+  FetchMoreTopRatedMoviesEvent(this.query);
+}
 
 class SearchTopRatedMoviesEvent extends TopRatedMoviesEvent {
   final String query;
@@ -14,9 +22,16 @@ class SearchTopRatedMoviesEvent extends TopRatedMoviesEvent {
 
 abstract class NowPlayingMoviesEvent {}
 
-class FetchNowPlayingMoviesEvent extends NowPlayingMoviesEvent {}
+class FetchNowPlayingMoviesEvent extends NowPlayingMoviesEvent {
+  final String query;
 
-class FetchMoreNowPlayingMoviesEvent extends NowPlayingMoviesEvent {}
+  FetchNowPlayingMoviesEvent(this.query);
+}
+
+class FetchMoreNowPlayingMoviesEvent extends NowPlayingMoviesEvent {
+  final String query;
+  FetchMoreNowPlayingMoviesEvent(this.query);
+}
 
 class SearchNowPlayingMoviesEvent extends NowPlayingMoviesEvent {
   final String query;

@@ -37,7 +37,7 @@ class _WeMoviesState extends State<WeMovies> {
     if (_horizontalScrollController.position.pixels ==
         _horizontalScrollController.position.maxScrollExtent) {
       if (topRatedMoviesBloc.state is TopRatedMoviesLoaded) {
-        topRatedMoviesBloc.add(FetchMoreTopRatedMoviesEvent());
+        topRatedMoviesBloc.add(FetchMoreTopRatedMoviesEvent(_searchController.text));
       }
     }
   }
@@ -61,11 +61,11 @@ class _WeMoviesState extends State<WeMovies> {
       providers: [
         BlocProvider(
           create: (context) =>
-              topRatedMoviesBloc..add(FetchTopRatedMoviesEvent()),
+              topRatedMoviesBloc..add(FetchTopRatedMoviesEvent(_searchController.text)),
         ),
         BlocProvider(
           create: (context) =>
-              nowPlayingMoviesBloc..add(FetchNowPlayingMoviesEvent()),
+              nowPlayingMoviesBloc..add(FetchNowPlayingMoviesEvent(_searchController.text)),
         ),
       ],
       child: SafeArea(
@@ -73,8 +73,8 @@ class _WeMoviesState extends State<WeMovies> {
           padding: const EdgeInsets.all(8.0),
           child: RefreshIndicator(
             onRefresh: () async {
-              topRatedMoviesBloc.add(FetchTopRatedMoviesEvent());
-              nowPlayingMoviesBloc.add(FetchNowPlayingMoviesEvent());
+              topRatedMoviesBloc.add(FetchTopRatedMoviesEvent(_searchController.text));
+              nowPlayingMoviesBloc.add(FetchNowPlayingMoviesEvent(_searchController.text));
             },
             child: SingleChildScrollView(
               controller: _horizontalScrollController,
@@ -114,7 +114,7 @@ class _WeMoviesState extends State<WeMovies> {
                             onPageChanged: (index, reason) {
                               if (index == nowPlayingMovies.length - 1) {
                                 nowPlayingMoviesBloc
-                                    .add(FetchMoreNowPlayingMoviesEvent());
+                                    .add(FetchMoreNowPlayingMoviesEvent(_searchController.text));
                               }
                             },
                             nowPlayingMovies: nowPlayingMovies);

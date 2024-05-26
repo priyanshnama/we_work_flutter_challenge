@@ -19,7 +19,14 @@ class NowPlayingMoviesBloc
         currentPage = 1;
         nowPlayingMovies =
             await weMoviesRepository.getNowPlayingMovies(page: currentPage);
-        emit(NowPlayingMoviesLoaded(nowPlayingMovies));
+        if (event.query.isEmpty) {
+          emit(NowPlayingMoviesLoaded(nowPlayingMovies));
+        }
+        final filteredMovies = nowPlayingMovies
+            .where((movie) =>
+                movie.title.toLowerCase().contains(event.query.toLowerCase()))
+            .toList();
+        emit(NowPlayingMoviesLoaded(filteredMovies));
       } catch (e) {
         emit(NowPlayingMoviesError(e.toString()));
       }
@@ -33,7 +40,14 @@ class NowPlayingMoviesBloc
         final moreMovies =
             await weMoviesRepository.getNowPlayingMovies(page: currentPage);
         nowPlayingMovies.addAll(moreMovies);
-        emit(NowPlayingMoviesLoaded(nowPlayingMovies));
+        if (event.query.isEmpty) {
+          emit(NowPlayingMoviesLoaded(nowPlayingMovies));
+        }
+        final filteredMovies = nowPlayingMovies
+            .where((movie) =>
+                movie.title.toLowerCase().contains(event.query.toLowerCase()))
+            .toList();
+        emit(NowPlayingMoviesLoaded(filteredMovies));
       } catch (e) {
         emit(NowPlayingMoviesError(e.toString()));
       } finally {
