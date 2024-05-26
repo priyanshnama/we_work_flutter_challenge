@@ -20,22 +20,20 @@ class _WeMoviesState extends State<WeMovies> {
   final _searchController = TextEditingController();
   late final TopRatedMoviesBloc topRatedMoviesBloc;
   late final NowPlayingMoviesBloc nowPlayingMoviesBloc;
-  final ScrollController _horizontalScrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     topRatedMoviesBloc = TopRatedMoviesBloc(context.read<WeMoviesRepository>());
     nowPlayingMoviesBloc =
         NowPlayingMoviesBloc(context.read<WeMoviesRepository>());
-
-    _horizontalScrollController.addListener(_onVerticalScroll);
-
+    _scrollController.addListener(_onScroll);
     super.initState();
   }
 
-  void _onVerticalScroll() {
-    if (_horizontalScrollController.position.pixels ==
-        _horizontalScrollController.position.maxScrollExtent) {
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       if (topRatedMoviesBloc.state is TopRatedMoviesLoaded) {
         topRatedMoviesBloc
             .add(FetchMoreTopRatedMoviesEvent(_searchController.text));
@@ -50,7 +48,7 @@ class _WeMoviesState extends State<WeMovies> {
 
   @override
   void dispose() {
-    _horizontalScrollController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -59,13 +57,11 @@ class _WeMoviesState extends State<WeMovies> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => topRatedMoviesBloc
-            ..add(FetchTopRatedMoviesEvent(_searchController.text)),
-        ),
+            create: (context) => topRatedMoviesBloc
+              ..add(FetchTopRatedMoviesEvent(_searchController.text))),
         BlocProvider(
-          create: (context) => nowPlayingMoviesBloc
-            ..add(FetchNowPlayingMoviesEvent(_searchController.text)),
-        ),
+            create: (context) => nowPlayingMoviesBloc
+              ..add(FetchNowPlayingMoviesEvent(_searchController.text))),
       ],
       child: SafeArea(
         child: Padding(
@@ -77,88 +73,99 @@ class _WeMoviesState extends State<WeMovies> {
               nowPlayingMoviesBloc
                   .add(FetchNowPlayingMoviesEvent(_searchController.text));
             },
-            child: SingleChildScrollView(
-              controller: _horizontalScrollController,
+            child: CustomScrollView(
+              controller: _scrollController,
               physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  // Search bar
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: TextField(
-                      controller: _searchController,
-                      onChanged: _onSearch,
-                      decoration: const InputDecoration(
-                        hintText: 'Search Movies by name ...',
-                        prefixIcon: Icon(Icons.search),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                      ),
-                    ),
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.all(12.0),
+                  sliver: SliverToBoxAdapter(
+                    child: _buildSearchBar(),
                   ),
-                  const SizedBox(height: 20),
-
-                  // Now Playing section
-                  BlocBuilder<NowPlayingMoviesBloc, NowPlayingMoviesState>(
-                    builder: (context, state) {
-                      if (state is NowPlayingMoviesLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (state is NowPlayingMoviesLoaded) {
-                        final nowPlayingMovies = state.nowPlayingMovies;
-                        return NowPlayingSection(
-                            onPageChanged: (index, reason) {
-                              if (index == nowPlayingMovies.length - 1) {
-                                nowPlayingMoviesBloc.add(
-                                    FetchMoreNowPlayingMoviesEvent(
-                                        _searchController.text));
-                              }
-                            },
-                            nowPlayingMovies: nowPlayingMovies);
-                      } else if (state is NowPlayingMoviesError) {
-                        return Center(child: Text(state.message));
-                      } else {
-                        return Container();
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Top Rated section
-                  const SectionHeader(title: 'TOP RATED'),
-                  const SizedBox(height: 10),
-                  BlocBuilder<TopRatedMoviesBloc, TopRatedMoviesState>(
-                    builder: (context, state) {
-                      if (state is TopRatedMoviesLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (state is TopRatedMoviesLoaded) {
-                        final topRatedMovies = state.topRatedMovies;
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Column(
-                            children: topRatedMovies
-                                .map((movie) => TopRatedMovieCard(movie: movie))
-                                .toList(),
-                          ),
-                        );
-                      } else if (state is TopRatedMoviesError) {
-                        return Center(child: Text(state.message));
-                      } else {
-                        return Container();
-                      }
-                    },
-                  ),
-                ],
-              ),
+                ),
+                SliverToBoxAdapter(child: _buildNowPlayingSection()),
+                const SliverToBoxAdapter(
+                    child: SectionHeader(title: 'TOP RATED')),
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  sliver: _buildTopRatedSection(),
+                ),
+              ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return TextField(
+      controller: _searchController,
+      onChanged: _onSearch,
+      decoration: const InputDecoration(
+        hintText: 'Search Movies by name ...',
+        prefixIcon: Icon(Icons.search),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+      ),
+    );
+  }
+
+  Widget _buildNowPlayingSection() {
+    return BlocBuilder<NowPlayingMoviesBloc, NowPlayingMoviesState>(
+      builder: (context, state) {
+        if (state is NowPlayingMoviesLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is NowPlayingMoviesLoaded) {
+          final nowPlayingMovies = state.nowPlayingMovies;
+          return NowPlayingSection(
+            onPageChanged: (index, reason) {
+              if (index == nowPlayingMovies.length - 1) {
+                nowPlayingMoviesBloc.add(
+                    FetchMoreNowPlayingMoviesEvent(_searchController.text));
+              }
+            },
+            nowPlayingMovies: nowPlayingMovies,
+          );
+        } else if (state is NowPlayingMoviesError) {
+          return Center(child: Text(state.message));
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+
+  Widget _buildTopRatedSection() {
+    return BlocBuilder<TopRatedMoviesBloc, TopRatedMoviesState>(
+      builder: (context, state) {
+        if (state is TopRatedMoviesLoading) {
+          return const SliverToBoxAdapter(
+            child: Center(child: CircularProgressIndicator()),
+          );
+        } else if (state is TopRatedMoviesLoaded) {
+          final topRatedMovies = state.topRatedMovies;
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return TopRatedMovieCard(movie: topRatedMovies[index]);
+              },
+              childCount: topRatedMovies.length,
+            ),
+          );
+        } else if (state is TopRatedMoviesError) {
+          return SliverToBoxAdapter(
+            child: Center(child: Text(state.message)),
+          );
+        } else {
+          return const SliverToBoxAdapter(child: SizedBox());
+        }
+      },
     );
   }
 }

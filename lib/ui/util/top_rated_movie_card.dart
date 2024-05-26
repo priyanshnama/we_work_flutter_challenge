@@ -18,6 +18,9 @@ class TopRatedMovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final titleStyle = textTheme.bodyLarge
+        ?.copyWith(fontWeight: FontWeight.bold, fontSize: 18);
+
     return Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(
@@ -30,50 +33,7 @@ class TopRatedMovieCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                    ),
-                    child: Image.network(
-                      context
-                          .read<WeMoviesRepository>()
-                          .getFullImageUrl(movie.backdropPath),
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 180,
-                    )),
-                Positioned(
-                  left: 10,
-                  bottom: 30,
-                  child: Container(
-                    width: 46,
-                    height: 46,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[500],
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: Column(
-                      children: [
-                        const Icon(Icons.remove_red_eye_outlined,
-                            color: Colors.white, size: 16),
-                        const SizedBox(width: 5),
-                        Text(
-                          getPopularity(),
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            _buildImageSection(context),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
@@ -82,8 +42,7 @@ class TopRatedMovieCard extends StatelessWidget {
                   Text(
                     movie.title,
                     maxLines: 1,
-                    style: textTheme.bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+                    style: titleStyle,
                   ),
                   const SizedBox(height: 5),
                   Row(
@@ -128,6 +87,61 @@ class TopRatedMovieCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildImageSection(BuildContext context) {
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15),
+          ),
+          child: Image.network(
+            context
+                .read<WeMoviesRepository>()
+                .getFullImageUrl(movie.backdropPath),
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: 180,
+            loadingBuilder: (context, child, progress) {
+              return progress == null
+                  ? child
+                  : const Center(child: CircularProgressIndicator());
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return const Center(child: Icon(Icons.error, color: Colors.red));
+            },
+          ),
+        ),
+        Positioned(
+          left: 10,
+          bottom: 30,
+          child: Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: Colors.grey[500],
+              borderRadius: BorderRadius.circular(30),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Column(
+              children: [
+                const Icon(Icons.remove_red_eye_outlined,
+                    color: Colors.white, size: 16),
+                const SizedBox(width: 5),
+                Text(
+                  getPopularity(),
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
