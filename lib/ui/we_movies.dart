@@ -37,16 +37,15 @@ class _WeMoviesState extends State<WeMovies> {
     if (_horizontalScrollController.position.pixels ==
         _horizontalScrollController.position.maxScrollExtent) {
       if (topRatedMoviesBloc.state is TopRatedMoviesLoaded) {
-        topRatedMoviesBloc.add(FetchMoreTopRatedMoviesEvent(_searchController.text));
+        topRatedMoviesBloc
+            .add(FetchMoreTopRatedMoviesEvent(_searchController.text));
       }
     }
   }
 
   void _onSearch(String query) {
-    if (query.isNotEmpty) {
-      topRatedMoviesBloc.add(SearchTopRatedMoviesEvent(query));
-      nowPlayingMoviesBloc.add(SearchNowPlayingMoviesEvent(query));
-    }
+    topRatedMoviesBloc.add(SearchTopRatedMoviesEvent(query));
+    nowPlayingMoviesBloc.add(SearchNowPlayingMoviesEvent(query));
   }
 
   @override
@@ -60,12 +59,12 @@ class _WeMoviesState extends State<WeMovies> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              topRatedMoviesBloc..add(FetchTopRatedMoviesEvent(_searchController.text)),
+          create: (context) => topRatedMoviesBloc
+            ..add(FetchTopRatedMoviesEvent(_searchController.text)),
         ),
         BlocProvider(
-          create: (context) =>
-              nowPlayingMoviesBloc..add(FetchNowPlayingMoviesEvent(_searchController.text)),
+          create: (context) => nowPlayingMoviesBloc
+            ..add(FetchNowPlayingMoviesEvent(_searchController.text)),
         ),
       ],
       child: SafeArea(
@@ -73,8 +72,10 @@ class _WeMoviesState extends State<WeMovies> {
           padding: const EdgeInsets.all(8.0),
           child: RefreshIndicator(
             onRefresh: () async {
-              topRatedMoviesBloc.add(FetchTopRatedMoviesEvent(_searchController.text));
-              nowPlayingMoviesBloc.add(FetchNowPlayingMoviesEvent(_searchController.text));
+              topRatedMoviesBloc
+                  .add(FetchTopRatedMoviesEvent(_searchController.text));
+              nowPlayingMoviesBloc
+                  .add(FetchNowPlayingMoviesEvent(_searchController.text));
             },
             child: SingleChildScrollView(
               controller: _horizontalScrollController,
@@ -113,8 +114,9 @@ class _WeMoviesState extends State<WeMovies> {
                         return NowPlayingSection(
                             onPageChanged: (index, reason) {
                               if (index == nowPlayingMovies.length - 1) {
-                                nowPlayingMoviesBloc
-                                    .add(FetchMoreNowPlayingMoviesEvent(_searchController.text));
+                                nowPlayingMoviesBloc.add(
+                                    FetchMoreNowPlayingMoviesEvent(
+                                        _searchController.text));
                               }
                             },
                             nowPlayingMovies: nowPlayingMovies);
