@@ -4,17 +4,21 @@ import 'package:we_work_flutter_challenge/bloc/we_movies/we_movies_states.dart';
 import 'package:we_work_flutter_challenge/data/movie.dart';
 import 'package:we_work_flutter_challenge/service/we_movies_repository.dart';
 
-class NowPlayingMoviesBloc extends Bloc<NowPlayingMoviesEvent, NowPlayingMoviesState> {
+class NowPlayingMoviesBloc
+    extends Bloc<NowPlayingMoviesEvent, NowPlayingMoviesState> {
   final WeMoviesRepository weMoviesRepository;
   int currentPage = 1;
   List<Movie> nowPlayingMovies = [];
+  bool isLoading = false;
 
-  NowPlayingMoviesBloc(this.weMoviesRepository) : super(NowPlayingMoviesInitial()) {
+  NowPlayingMoviesBloc(this.weMoviesRepository)
+      : super(NowPlayingMoviesInitial()) {
     on<FetchNowPlayingMoviesEvent>((event, emit) async {
       emit(NowPlayingMoviesLoading());
       try {
         currentPage = 1;
-        nowPlayingMovies = await weMoviesRepository.getNowPlayingMovies(page: currentPage);
+        nowPlayingMovies =
+            await weMoviesRepository.getNowPlayingMovies(page: currentPage);
         emit(NowPlayingMoviesLoaded(nowPlayingMovies));
       } catch (e) {
         emit(NowPlayingMoviesError(e.toString()));
@@ -22,13 +26,19 @@ class NowPlayingMoviesBloc extends Bloc<NowPlayingMoviesEvent, NowPlayingMoviesS
     });
 
     on<FetchMoreNowPlayingMoviesEvent>((event, emit) async {
+      if (isLoading) return;
+
       try {
+        isLoading = true;
         currentPage++;
-        final moreMovies = await weMoviesRepository.getNowPlayingMovies(page: currentPage);
+        final moreMovies =
+            await weMoviesRepository.getNowPlayingMovies(page: currentPage);
         nowPlayingMovies.addAll(moreMovies);
         emit(NowPlayingMoviesLoaded(nowPlayingMovies));
       } catch (e) {
         emit(NowPlayingMoviesError(e.toString()));
+      } finally {
+        isLoading = false;
       }
     });
   }
