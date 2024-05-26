@@ -25,6 +25,12 @@ class NowPlayingMovieCard extends StatelessWidget {
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.white,
+                  child: const Text("Unable to load image")
+                );
+              },
             )),
         Column(
           children: [
@@ -100,7 +106,7 @@ class NowPlayingMovieCard extends StatelessWidget {
                         bottom: Radius.circular(20)),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
