@@ -6,8 +6,8 @@ import 'package:we_work_flutter_challenge/bloc/we_movies/we_movies_events.dart';
 import 'package:we_work_flutter_challenge/bloc/we_movies/we_movies_states.dart';
 import 'package:we_work_flutter_challenge/service/we_movies_repository.dart';
 import 'package:we_work_flutter_challenge/ui/util/now_playing_section.dart';
-import 'package:we_work_flutter_challenge/ui/util/section_header.dart';
-import 'package:we_work_flutter_challenge/ui/util/top_rated_movie_card.dart';
+import 'package:we_work_flutter_challenge/ui/headers/section_header.dart';
+import 'package:we_work_flutter_challenge/ui/cards/top_rated_movie_card.dart';
 
 class WeMovies extends StatefulWidget {
   const WeMovies({super.key});

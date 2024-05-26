@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:we_work_flutter_challenge/ui/util/base_movie_card.dart';
+import 'package:we_work_flutter_challenge/ui/cards/base_movie_card.dart';
 import 'package:we_work_flutter_challenge/ui/util/custom_shape_clipper.dart';
 
 class NowPlayingMovieCard extends BaseMovieCard {

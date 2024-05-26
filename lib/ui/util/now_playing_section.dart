@@ -2,9 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:we_work_flutter_challenge/data/movie.dart';
 import 'package:we_work_flutter_challenge/ui/util/carousel_custom_indicator.dart';
-import 'package:we_work_flutter_challenge/ui/util/now_playing_movie_card.dart';
-import 'package:we_work_flutter_challenge/ui/util/section_header.dart';
-import 'package:we_work_flutter_challenge/ui/util/we_movies_header.dart';
+import 'package:we_work_flutter_challenge/ui/cards/now_playing_movie_card.dart';
+import 'package:we_work_flutter_challenge/ui/headers/section_header.dart';
+import 'package:we_work_flutter_challenge/ui/headers/we_movies_header.dart';
 
 class NowPlayingSection extends StatefulWidget {
   final List<Movie> nowPlayingMovies;
