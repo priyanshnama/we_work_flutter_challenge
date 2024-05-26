@@ -8,6 +8,13 @@ class TopRatedMovieCard extends StatelessWidget {
 
   const TopRatedMovieCard({super.key, required this.movie});
 
+  String getPopularity() {
+    if (movie.popularity < 1000) {
+      return '${movie.popularity.toInt()}';
+    }
+    return '${(movie.popularity / 1000).toStringAsFixed(1)}K';
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -44,6 +51,8 @@ class TopRatedMovieCard extends StatelessWidget {
                   left: 10,
                   bottom: 30,
                   child: Container(
+                    width: 46,
+                    height: 46,
                     decoration: BoxDecoration(
                       color: Colors.grey[500],
                       borderRadius: BorderRadius.circular(30),
@@ -56,7 +65,7 @@ class TopRatedMovieCard extends StatelessWidget {
                             color: Colors.white, size: 16),
                         const SizedBox(width: 5),
                         Text(
-                          '${(movie.popularity / 1000).toStringAsFixed(1)}K',
+                          getPopularity(),
                           style: const TextStyle(color: Colors.white),
                         ),
                       ],
