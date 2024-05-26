@@ -1,25 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:we_work_flutter_challenge/data/movie.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:we_work_flutter_challenge/service/we_movies_repository.dart';
+import 'package:we_work_flutter_challenge/ui/util/base_movie_card.dart';
 
-class TopRatedMovieCard extends StatelessWidget {
-  final Movie movie;
-
-  const TopRatedMovieCard({super.key, required this.movie});
-
-  String getPopularity() {
-    if (movie.popularity < 1000) {
-      return '${movie.popularity.toInt()}';
-    }
-    return '${(movie.popularity / 1000).toStringAsFixed(1)}K';
-  }
+class TopRatedMovieCard extends BaseMovieCard {
+  const TopRatedMovieCard({super.key, required super.movie});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final titleStyle = textTheme.bodyLarge
-        ?.copyWith(fontWeight: FontWeight.bold, fontSize: 18);
 
     return Card(
       color: Colors.white,
@@ -33,7 +20,7 @@ class TopRatedMovieCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildImageSection(context),
+            buildImage(context, size: 180),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
@@ -42,7 +29,8 @@ class TopRatedMovieCard extends StatelessWidget {
                   Text(
                     movie.title,
                     maxLines: 1,
-                    style: titleStyle,
+                    style: textTheme.bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   const SizedBox(height: 5),
                   Row(
@@ -87,61 +75,6 @@ class TopRatedMovieCard extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildImageSection(BuildContext context) {
-    return Stack(
-      children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15),
-          ),
-          child: Image.network(
-            context
-                .read<WeMoviesRepository>()
-                .getFullImageUrl(movie.backdropPath),
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: 180,
-            loadingBuilder: (context, child, progress) {
-              return progress == null
-                  ? child
-                  : const Center(child: CircularProgressIndicator());
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return const Center(child: Icon(Icons.error, color: Colors.red));
-            },
-          ),
-        ),
-        Positioned(
-          left: 10,
-          bottom: 30,
-          child: Container(
-            width: 46,
-            height: 46,
-            decoration: BoxDecoration(
-              color: Colors.grey[500],
-              borderRadius: BorderRadius.circular(30),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: Column(
-              children: [
-                const Icon(Icons.remove_red_eye_outlined,
-                    color: Colors.white, size: 16),
-                const SizedBox(width: 5),
-                Text(
-                  getPopularity(),
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
