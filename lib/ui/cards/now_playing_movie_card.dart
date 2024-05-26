@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:we_work_flutter_challenge/ui/cards/base_movie_card.dart';
 import 'package:we_work_flutter_challenge/ui/util/custom_shape_clipper.dart';
+import 'package:locale_names/locale_names.dart';
 
 class NowPlayingMovieCard extends BaseMovieCard {
   const NowPlayingMovieCard({super.key, required super.movie});
 
+  String getLanguageFullName(String languageCode) {
+  try {
+    languageCode = languageCode.toLowerCase();
+    final data = DisplayNames.tables['en'] as Map<String, String>?;
+    if (data != null && data.containsKey(languageCode)) {
+      return data[languageCode] ?? 'Unknown';
+    }
+    return 'Unknown';
+  } catch (e) {
+    return 'Unknown Language';
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final width = MediaQuery.of(context).size.width;
 
     return Stack(
       children: [
@@ -45,12 +60,12 @@ class NowPlayingMovieCard extends BaseMovieCard {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(width: 90),
-                          const Icon(Icons.language,
+                          SizedBox(width: width / 3),
+                          const Icon(Icons.location_on_outlined,
                               color: Colors.white, size: 16),
                           const SizedBox(width: 5),
                           Text(
-                            movie.originalLanguage.toUpperCase(),
+                            getLanguageFullName(movie.originalLanguage),
                             style: textTheme.bodySmall
                                 ?.copyWith(color: Colors.white),
                           ),
