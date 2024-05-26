@@ -90,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
           selectedItemColor: Colors.black,
+          backgroundColor: Colors.white,
         ),
       ),
     );
