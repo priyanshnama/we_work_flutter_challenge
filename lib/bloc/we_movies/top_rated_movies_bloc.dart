@@ -9,7 +9,7 @@ class TopRatedMoviesBloc
   final WeMoviesRepository weMoviesRepository;
   int currentPage = 1;
   List<Movie> topRatedMovies = [];
-  bool isLoading = false;
+  bool isFetching = false;
 
   TopRatedMoviesBloc(this.weMoviesRepository) : super(TopRatedMoviesInitial()) {
     on<FetchTopRatedMoviesEvent>((event, emit) async {
@@ -25,10 +25,9 @@ class TopRatedMoviesBloc
     });
 
     on<FetchMoreTopRatedMoviesEvent>((event, emit) async {
-      if (isLoading) return;
-
+      if (isFetching) return;
       try {
-        isLoading = true;
+        isFetching = true;
         currentPage++;
         final moreMovies =
             await weMoviesRepository.getTopRatedMovies(page: currentPage);
@@ -37,7 +36,19 @@ class TopRatedMoviesBloc
       } catch (e) {
         emit(TopRatedMoviesError(e.toString()));
       } finally {
-        isLoading = false;
+        isFetching = false;
+      }
+    });
+
+    on<SearchTopRatedMoviesEvent>((event, emit) {
+      final filteredMovies = topRatedMovies
+          .where((movie) =>
+              movie.title.toLowerCase().contains(event.query.toLowerCase()))
+          .toList();
+      if (filteredMovies.isEmpty) {
+        emit(TopRatedMoviesError("No results found"));
+      } else {
+        emit(TopRatedMoviesLoaded(filteredMovies));
       }
     });
   }

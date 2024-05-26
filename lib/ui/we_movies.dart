@@ -42,6 +42,13 @@ class _WeMoviesState extends State<WeMovies> {
     }
   }
 
+  void _onSearch(String query) {
+    if (query.isNotEmpty) {
+      topRatedMoviesBloc.add(SearchTopRatedMoviesEvent(query));
+      nowPlayingMoviesBloc.add(SearchNowPlayingMoviesEvent(query));
+    }
+  }
+
   @override
   void dispose() {
     _horizontalScrollController.dispose();
@@ -79,6 +86,7 @@ class _WeMoviesState extends State<WeMovies> {
                     padding: const EdgeInsets.all(12.0),
                     child: TextField(
                       controller: _searchController,
+                      onChanged: _onSearch,
                       decoration: const InputDecoration(
                         hintText: 'Search Movies by name ...',
                         prefixIcon: Icon(Icons.search),

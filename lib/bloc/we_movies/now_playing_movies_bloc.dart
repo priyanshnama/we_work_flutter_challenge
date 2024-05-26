@@ -9,7 +9,7 @@ class NowPlayingMoviesBloc
   final WeMoviesRepository weMoviesRepository;
   int currentPage = 1;
   List<Movie> nowPlayingMovies = [];
-  bool isLoading = false;
+  bool isFetching = false;
 
   NowPlayingMoviesBloc(this.weMoviesRepository)
       : super(NowPlayingMoviesInitial()) {
@@ -26,10 +26,9 @@ class NowPlayingMoviesBloc
     });
 
     on<FetchMoreNowPlayingMoviesEvent>((event, emit) async {
-      if (isLoading) return;
-
+      if (isFetching) return;
       try {
-        isLoading = true;
+        isFetching = true;
         currentPage++;
         final moreMovies =
             await weMoviesRepository.getNowPlayingMovies(page: currentPage);
@@ -38,7 +37,19 @@ class NowPlayingMoviesBloc
       } catch (e) {
         emit(NowPlayingMoviesError(e.toString()));
       } finally {
-        isLoading = false;
+        isFetching = false;
+      }
+    });
+
+    on<SearchNowPlayingMoviesEvent>((event, emit) {
+      final filteredMovies = nowPlayingMovies
+          .where((movie) =>
+              movie.title.toLowerCase().contains(event.query.toLowerCase()))
+          .toList();
+      if (filteredMovies.isEmpty) {
+        emit(NowPlayingMoviesError("No results found"));
+      } else {
+        emit(NowPlayingMoviesLoaded(filteredMovies));
       }
     });
   }
